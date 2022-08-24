@@ -143,7 +143,7 @@ def set_preconditions(filepath):
         row = line.rstrip().split(' ')
 
         master.mav.param_set_send(master.target_system, master.target_component,
-                                  row[0],
+                                  str.encode(row[0]),
                                   float(row[1]),
                                   mavutil.mavlink.MAV_PARAM_TYPE_REAL32)
         time.sleep(1)
@@ -358,7 +358,7 @@ def change_parameter(selected_param):
 
     # 2) Set parameter value
     master.mav.param_set_send(master.target_system, master.target_component,
-                              param_name,
+                              str.encode(param_name),
                               param_value,
                               mavutil.mavlink.MAV_PARAM_TYPE_REAL32)
 
@@ -498,7 +498,7 @@ def handle_param(msg):
     global target_param_value
 
     message = msg.to_dict()
-    if message['param_id'].decode("utf-8") == target_param:
+    if message['param_id'] == target_param:
         target_param_ready = 1
         target_param_value = message['param_value']
     else:
@@ -857,7 +857,7 @@ def calculate_distance(guidance):
 
     # P5
     # Request parameter
-    master.mav.param_request_read_send(master.target_system, master.target_component, 'CHUTE_ALT_MIN', -1)
+    master.mav.param_request_read_send(master.target_system, master.target_component, b'CHUTE_ALT_MIN', -1)
 
     target_param = "CHUTE_ALT_MIN"
     count = 0
@@ -887,7 +887,7 @@ def calculate_distance(guidance):
     # P2
     # Request parameter
     master.mav.param_request_read_send(
-        master.target_system, master.target_component, 'RTL_ALT', -1)
+        master.target_system, master.target_component, b'RTL_ALT', -1)
 
     target_param = "RTL_ALT"
     count = 0
@@ -1191,7 +1191,7 @@ def execute_env(num):
         print("@@@[Reuse stored input pair] (%s, %s)@@@" % (Current_input, Current_input_val))
 
     master.mav.param_set_send(master.target_system, master.target_component,
-                              Current_input,
+                              str.encode(Current_input),
                               float(Current_input_val),
                               mavutil.mavlink.MAV_PARAM_TYPE_REAL32)
 
@@ -1422,15 +1422,15 @@ t3.start()
 # Main loop
 while True:
 
-    global drone_status
-    global executing_commands
-    global home_altitude
-    global current_altitude
-    global Armed
-    global Parachute_on
-    global count_main_loop
-    global goal_throttle
-    global RV_alive
+    #global drone_status
+    #global executing_commands
+    #global home_altitude
+    #global current_altitude
+    #global Armed
+    #global Parachute_on
+    #global count_main_loop
+    #global goal_throttle
+    #global RV_alive
 
     # print("[Debug] drone_status:%d" %drone_status)
 
